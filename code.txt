@@ -1,1 +1,11 @@
-print(Hello World) 
+git status
+
+# 2. Add files to staging
+git add filename.py        # add one file
+git add .                  # add ALL changed files
+
+# 3. Save a snapshot (commit)
+git commit -m "Add login feature"
+
+# 4. Push to GitHub
+git push origin main
