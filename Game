@@ -1,0 +1,53 @@
+import random
+import time
+
+def memory_game():
+    print("=== Memory Game ===")
+    cards = ["🍎","🍎","🍌","🍌","🍇","🍇","🍓","🍓",
+             "🍒","🍒","🍑","🍑","🥝","🥝","🍍","🍍"]
+    
+    random.shuffle(cards)
+    board = [["❓"] * 4 for _ in range(4)]
+    revealed = [[False] * 4 for _ in range(4)]
+    matches = 0
+    attempts = 0
+
+    def show_board():
+        print("\n  1   2   3   4")
+        for i, row in enumerate(board):
+            display = []
+            for j, cell in enumerate(row):
+                display.append(cards[i*4+j] if revealed[i][j] else "❓")
+            print(f"{i+1} {' '.join(display)}")
+
+    while matches < 8:
+        show_board()
+        try:
+            r1, c1 = map(int, input("\nFirst card (row col): ").split())
+            r2, c2 = map(int, input("Second card (row col): ").split())
+            r1 -= 1; c1 -= 1; r2 -= 1; c2 -= 1
+
+            if (r1, c1) == (r2, c2):
+                print("Pick two different cards!")
+                continue
+
+            revealed[r1][c1] = True
+            revealed[r2][c2] = True
+            show_board()
+            attempts += 1
+            time.sleep(1)
+
+            if cards[r1*4+c1] == cards[r2*4+c2]:
+                print("✅ Match found!")
+                matches += 1
+            else:
+                print("❌ No match!")
+                revealed[r1][c1] = False
+                revealed[r2][c2] = False
+
+        except (ValueError, IndexError):
+            print("Enter valid row and column (1-4)!")
+
+    print(f"\n🎉 You Won in {attempts} attempts!")
+
+memory_game()
