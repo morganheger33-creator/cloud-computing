@@ -50,4 +50,8 @@ def memory_game():
 
     print(f"\n🎉 You Won in {attempts} attempts!")
 
+<<<<<<< HEAD
 memory_game()
+=======
+memory_game()
+>>>>>>> 8459687ee39fd87dd6cd698241ab8f6129213287
