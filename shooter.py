@@ -22,8 +22,10 @@ from dataclasses import dataclass, field
 from typing import List, Tuple, Optional
 
 pygame.init()
-pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
-
+try:
+    pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
+except pygame.error:
+    print("No audio device found, running without sound.")
 # ── Constants ────────────────────────────────────────────────────────────────
 W, H = 900, 700
 FPS = 60
@@ -84,10 +86,15 @@ try:
     SND_HURT    = synth_sound(200,  0.20, 0.40, "noise")
     HAS_SOUND   = True
 except Exception:
-    HAS_SOUND = False
+    SND_SHOOT   = None
+    SND_EXPLODE = None
+    SND_MISSILE = None
+    SND_POWERUP = None
+    SND_HURT    = None
+    HAS_SOUND   = False
 
 def play(snd):
-    if HAS_SOUND:
+    if HAS_SOUND and snd is not None:
         snd.play()
 
 # ── Helpers ──────────────────────────────────────────────────────────────────
@@ -553,7 +560,6 @@ class Player:
         else:
             self.hp -= dmg
         self.invuln = self.INVULN_FRAMES
-        play(SND_HURT)
         if self.hp <= 0:
             self.alive = False
 
